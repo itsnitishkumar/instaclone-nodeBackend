@@ -33,10 +33,27 @@ router.post('/signup', (req, res)=>{
                 .catch(err => { console.log(err) });
             })
         })
+})
 
-        
+router.post('/signin', (req,res)=>{
+    const {email, password} = req.body
 
+    if(!email || !password){
+        console.log('Email and Password is needed');
+    }
 
+    USER.findOne({email:email}).then((savedUser)=>{
+        if(!savedUser){
+            return res.status(422).json({error: "Invalid email"})
+        }
+        bcrypt.compare(password, savedUser.password)
+        .then((match)=> {
+            if(match)
+                return res.status(200).json({message: 'Signed in successfully'})
+            else
+                return res.status(422).json({message: 'Invalid password'})
+        })
+    })
 })
 
 module.exports = router
