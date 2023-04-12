@@ -37,9 +37,8 @@ router.post('/signup', (req, res)=>{
 
 router.post('/signin', (req,res)=>{
     const {email, password} = req.body
-
     if(!email || !password){
-        console.log('Email and Password is needed');
+        return res.status(422).json({error: 'Email and Password is needed'})
     }
 
     USER.findOne({email:email}).then((savedUser)=>{
@@ -51,7 +50,7 @@ router.post('/signin', (req,res)=>{
             if(match)
                 return res.status(200).json({message: 'Signed in successfully'})
             else
-                return res.status(422).json({message: 'Invalid password'})
+                return res.status(422).json({error: 'Invalid password'})
         })
     })
 })
