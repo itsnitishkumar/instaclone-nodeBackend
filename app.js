@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose')
-const mongoUrl = require('./keys.js')
+const { mongoUrl } = require('./keys.js')
 require('./models/model')
 const PORT = 5001;
 const cors = require('cors')
