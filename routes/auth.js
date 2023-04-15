@@ -61,8 +61,6 @@ router.post('/signup', (req, res)=>{
         })
     })
     
-    router.get("/createPost",requireLogin, (req ,res)=>{
-        console.log("hello auth");
-    })
+
 
     module.exports = router 
