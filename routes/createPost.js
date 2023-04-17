@@ -6,13 +6,13 @@ const POST = mongoose.model("POST")
 
 // Routes
 router.post("/createPost", requireLogin,(req, res)=>{
-    const {title, body}=req.body
-    if(!title || !body){
+    const {body, pic}=req.body
+    if(!body || !pic){
         return res.status(422).json({error: "Please add all the fields"})
     }
     const post = new POST({
-        title,
         body,
+        photo : pic,
         postedBy: req.user
     })
     
