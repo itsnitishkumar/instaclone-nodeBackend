@@ -30,4 +30,10 @@ router.post("/createPost", requireLogin,(req, res)=>{
     })
 })
 
+router.get("/myposts",requireLogin ,(req, res)=>{
+    POST.find({postedBy: req.user._id})
+    .populate("postedBy", "_id name")
+    .then(myposts => res.json(myposts))
+})
+
 module.exports = router
