@@ -36,4 +36,22 @@ router.get("/myposts",requireLogin ,(req, res)=>{
     .then(myposts => res.json(myposts))
 })
 
+router.put("/like", requireLogin, (req, res)=>{
+    POST.findByIdAndUpdate(req.body._id,{
+        $push: {likes: req.user._id}
+    },{
+        new: true
+    }).then(result=> {res.json(result)})
+    .catch(err=>{res.json({error:err})})
+})
+
+router.put("/unlike", requireLogin, (req, res)=>{
+    POST.findByIdAndUpdate(req.body._id,{
+        $pull: {likes: req.user._id}
+    },{
+        new: true
+    }).then(result=> {res.json(result)})
+    .catch(err=>{res.json({error:err})})
+})
+
 module.exports = router
