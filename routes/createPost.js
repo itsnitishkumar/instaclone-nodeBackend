@@ -9,7 +9,7 @@ router.get("/allPosts", requireLogin, (req, res)=> {
     POST.find()
     .populate("postedBy","_id, name")
     .populate("comments.postedBy", "_id name")
-    .then(posts=> res.json(posts))
+    .then(posts=> {res.json(posts)})
     .catch(err=>console.log(err))
 })
 
@@ -34,6 +34,7 @@ router.post("/createPost", requireLogin,(req, res)=>{
 router.get("/myposts",requireLogin ,(req, res)=>{
     POST.find({postedBy: req.user._id})
     .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
     .then(myposts => res.json(myposts))
 })
 
@@ -69,6 +70,27 @@ router.put("/comment", requireLogin, (req, res)=>{
     .populate("postedBy", "_id name")
     .then(result=> {res.json(result)})
     .catch(err=>{res.json({error:err})})
+})
+
+router.delete("/deletePost/:postId", requireLogin, (req, res)=>{
+    console.log(req.params.postId);
+    POST.findOne({_id:req.params.postId})
+    .populate("postedBy", "_id")
+    .then(post=> {
+        if(post.postedBy._id.toString() === req.user._id.toString()){
+            console.log(post);
+            post.deleteOne()
+            .then(result=>{
+                return res.json({message: "Successfully deleted"})
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
+    })
+    .catch(err=> {
+        console.log('error: ', err);
+        res.status(422).json({error: err})
+    })
 })
 
 module.exports = router
