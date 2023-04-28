@@ -9,6 +9,7 @@ router.get("/allPosts", requireLogin, (req, res)=> {
     POST.find()
     .populate("postedBy","_id, name")
     .populate("comments.postedBy", "_id name")
+    .sort("-createdAt")
     .then(posts=> {res.json(posts)})
     .catch(err=>console.log(err))
 })
@@ -35,6 +36,7 @@ router.get("/myposts",requireLogin ,(req, res)=>{
     POST.find({postedBy: req.user._id})
     .populate("postedBy", "_id name")
     .populate("comments.postedBy", "_id name")
+    .sort("-createdAt")
     .then(myposts => res.json(myposts))
 })
 
@@ -43,7 +45,8 @@ router.put("/like", requireLogin, (req, res)=>{
         $push: {likes: req.user._id}
     },{
         new: true
-    }).then(result=> {res.json(result)})
+    }).populate("postedBy", "_id name Photo")
+    .then(result=> {res.json(result)})
     .catch(err=>{res.json({error:err})})
 })
 
@@ -52,7 +55,8 @@ router.put("/unlike", requireLogin, (req, res)=>{
         $pull: {likes: req.user._id}
     },{
         new: true
-    }).then(result=> {res.json(result)})
+    }).populate("postedBy", "_id name Photo")
+    .then(result=> {res.json(result)})
     .catch(err=>{res.json({error:err})})
 })
 
@@ -67,7 +71,7 @@ router.put("/comment", requireLogin, (req, res)=>{
         new: true
     })
     .populate("comments.postedBy", "_id name")
-    .populate("postedBy", "_id name")
+    .populate("postedBy", "_id name Photo")
     .then(result=> {res.json(result)})
     .catch(err=>{res.json({error:err})})
 })
