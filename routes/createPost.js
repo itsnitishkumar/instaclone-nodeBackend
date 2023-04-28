@@ -93,4 +93,15 @@ router.delete("/deletePost/:postId", requireLogin, (req, res)=>{
     })
 })
 
+
+// to show following post
+router.get("/myfollowingpost", requireLogin, (req, res)=>{
+        POST.find({postedBy: {$in: req.user.following}})
+        .populate("postedBy" , "_id name")
+        .populate("comments.postedBy", "_id name")
+        .then(posts => res.json(posts))
+        .catch(err => {console.log(err);
+    })
+})
+
 module.exports = router
