@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const { mongoUrl } = require('./keys.js')
 require('./models/model.js')
 require('./models/post.js')
-const PORT = 5001;
+const PORT = process.env.port || 5001;
 const cors = require('cors')
 
 app.use(cors())

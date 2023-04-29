@@ -77,12 +77,10 @@ router.put("/comment", requireLogin, (req, res)=>{
 })
 
 router.delete("/deletePost/:postId", requireLogin, (req, res)=>{
-    console.log(req.params.postId);
     POST.findOne({_id:req.params.postId})
     .populate("postedBy", "_id")
     .then(post=> {
         if(post.postedBy._id.toString() === req.user._id.toString()){
-            console.log(post);
             post.deleteOne()
             .then(result=>{
                 return res.json({message: "Successfully deleted"})
