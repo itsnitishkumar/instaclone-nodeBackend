@@ -1,7 +1,8 @@
 # instaclone-nodeBackend
+This the the backend code of instagram clone built using Node, Express, MongoDB.
 
 ## Steps to make the backend work on your localmachine
-Downlaod backend code and open it in vscode or any code editor. Get inside the backend folder individually and download the node modules using below command and run the code
+Download backend code and open it in vscode or any code editor. Get inside the folder and download the node modules using below command and run the code
 ```
 #to download node_modules
 npm i   
